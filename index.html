@@ -8,15 +8,30 @@
 </head>
 <body>
 	<div class="container">
-		<h1 class="welcome-banner">Welcome to Appshare</h1>
-		<h2 class="welcome-message">The platform for making sharing apps fast, simple, and fun</h2>
+		<div class="welcome">
+			<h1 class="welcome-banner">Welcome to Appshare</h1>
+			<h2 class="welcome-message">The platform for making sharing apps fast, simple, and fun</h2>
+		</div>
 		<div class="form-group">
-			<h2 class="form-signin-heading">Register</h2>
-			<form class="form-signin" role="form">
+			<form class="form-register" role="form">
+				<h2 class="form-register-heading">Register</h2>
 				<label for="inputFirstName" class="sr-only">First></label>
 				<input type="text" class="form-control" placeholder="First name"/>
 				<label for="inputLastName" class="sr-only">Last></label>
 				<input type="text" class="form-control" placeholder="Last name"/>
+				<label for="inputEmail" class="sr-only">Email address</label>
+				<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+				<label for="inputPassword" class="sr-only">Password</label>
+				<input type="password" id="inputPassword" class="form-control" placeholder="Password required">
+				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+			</form>
+		</div>
+		<div class="iphone">
+			<img src="res/iphone.png" style="width:15%; height:45%; position: absolute; margin-left: 10%";>
+		</div>
+		<div class="form-group">
+			<form class="form-signin" role="form">
+				<h2 class="form-signin-heading">Sign in</h2>
 				<label for="inputEmail" class="sr-only">Email address</label>
 				<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
 				<label for="inputPassword" class="sr-only">Password</label>
