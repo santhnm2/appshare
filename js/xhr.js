@@ -48,3 +48,5 @@ function xhr(type, url, data) {
     }
   }
 }
+
+module.exports = xhr;

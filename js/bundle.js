@@ -47,7 +47,8 @@ var xhr = require('./xhr');
 var Search = React.createClass({displayName: 'Search',
 	getInitialState: function() {
 		return {
-			"searchTerm": null
+			"searchTerm": null,
+			"searchResults": null
 		};
 	},
 	
@@ -56,9 +57,9 @@ var Search = React.createClass({displayName: 'Search',
 		console.log('itunes url is ' + URL);
 		xhr('GET', URL)
 	   	.success(function(data) {
-    		console.log("abc");
+    		this.setState({searchResults: data})
     	}.bind(this));
-    	console.log('ITUNES xhr request should be being completed')
+    	
         //console.log(this.refs.searchBox.getDOMNode().value);
         //this.setState({text: ''});
     },
@@ -90,6 +91,7 @@ var Search = React.createClass({displayName: 'Search',
 				React.createElement("form", {style: searchStyle}, 
 					React.createElement(Input, {ref: "searchBox", type: "text", placeholder: "Search for an app...", onChange: this._handleChange, onKeyDown: this._handleKeyDown})
 				)
+				
 			)
 		);
 	}
@@ -157,6 +159,8 @@ function xhr(type, url, data) {
     }
   }
 }
+
+module.exports = xhr;
 },{}],"/home/santhnm2/appshare/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
 // shim for using process in browser
 
