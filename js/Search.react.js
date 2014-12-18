@@ -11,6 +11,7 @@ var MenuItem = require('react-bootstrap/MenuItem');
 var Input = require('react-bootstrap/Input');
 var Button = require('react-bootstrap/Button');
 var Itunes = require('./Itunes');
+var xhr = require('./xhr');
 
 var Search = React.createClass({
 	getInitialState: function() {
@@ -20,8 +21,13 @@ var Search = React.createClass({
 	},
 	
 	_handleSubmit: function() {
-		var URL = Itunes.getURL(this.state.searchTerm));
-		
+		var URL = Itunes.getURL(this.state.searchTerm);
+		console.log('itunes url is ' + URL);
+		xhr('GET', URL)
+	   	.success(function(data) {
+    		console.log("abc");
+    	}.bind(this));
+    	console.log('ITUNES xhr request should be being completed')
         //console.log(this.refs.searchBox.getDOMNode().value);
         //this.setState({text: ''});
     },
