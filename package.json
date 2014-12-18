@@ -1,15 +1,29 @@
 {
-  "name": "appshare",
-  "version": "0.0.1",
-  "description": "testing",
-  "main": "js/app.js",
+  "name": "Appshare",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app",
   "dependencies": {
     "body-parser": "^1.9.0",
     "express": "^4.10.1",
     "supervisor": "^0.6.0",
-    "watchify": "^2.1.1"
+    "watchify": "^2.1.1",
+    "browserify": "^6.2.0",
+    "react": "^0.12.0",
+    "react-bootstrap": "^0.13.0",
+    "reactify": "^0.15.2",
+    "watchify": "^2.1.0",
+    "xhr2": "^0.1.0"
   },
+  "devDependencies": {},
   "scripts": {
     "start": "supervisor app.js"
-  }
+  },
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
+  },
+  "author": "",
+  "license": "ISC"
 }
