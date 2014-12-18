@@ -40,7 +40,18 @@ app.post('/api/register', function(req, res){
     var email = req.body["infor[]"][2];
     var password = req.body["infor[]"][3];
   connection.query('INSERT INTO Users (first, last, email, password) VALUES ("'+first+'", "'+last+'", "'+email+'", "'+password+'")', function(err, rows){
-    
+        //do some error checking
+  });
+});
+
+app.post('/api/sign_in', function(req, res){
+    var email = req.body["infor[]"][0];
+    var password = req.body["infor[]"][1];
+    console.log(email);
+    console.log(password);
+    connection.query('SELECT * FROM Users WHERE email = "'+email+'" AND password = "'+password+'"', function(err, rows){
+        console.log("gets here");
+        res.json(rows);
   });
 });
 
