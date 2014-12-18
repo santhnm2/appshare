@@ -1,0 +1,15 @@
+{
+  "name": "appshare",
+  "version": "0.0.1",
+  "description": "testing",
+  "main": "js/app.js",
+  "dependencies": {
+    "body-parser": "^1.9.0",
+    "express": "^4.10.1",
+    "supervisor": "^0.6.0",
+    "watchify": "^2.1.1"
+  },
+  "scripts": {
+    "start": "supervisor app.js"
+  }
+}
