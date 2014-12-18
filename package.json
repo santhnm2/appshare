@@ -1,0 +1,24 @@
+{
+  "name": "Appshare",
+  "version": "1.0.0",
+  "description": "",
+  "main": "js/search.js",
+  "dependencies": {
+    "browserify": "^6.2.0",
+    "react": "^0.12.0",
+    "react-bootstrap": "^0.13.0",
+    "reactify": "^0.15.2",
+    "watchify": "^2.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "watchify js/search.js -o js/bundle.js"
+  },
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
+  },
+  "author": "",
+  "license": "ISC"
+}
