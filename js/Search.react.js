@@ -16,7 +16,8 @@ var xhr = require('./xhr');
 var Search = React.createClass({
 	getInitialState: function() {
 		return {
-			"searchTerm": null
+			"searchTerm": null,
+			"searchResults": null
 		};
 	},
 	
@@ -25,9 +26,9 @@ var Search = React.createClass({
 		console.log('itunes url is ' + URL);
 		xhr('GET', URL)
 	   	.success(function(data) {
-    		console.log("abc");
+    		this.setState({searchResults: data})
     	}.bind(this));
-    	console.log('ITUNES xhr request should be being completed')
+    	
         //console.log(this.refs.searchBox.getDOMNode().value);
         //this.setState({text: ''});
     },
@@ -59,6 +60,7 @@ var Search = React.createClass({
 				<form style={searchStyle}>
 					<Input ref="searchBox" type="text" placeholder="Search for an app..." onChange={this._handleChange} onKeyDown={this._handleKeyDown}/>
 				</form>
+				
 			</div>
 		);
 	}
