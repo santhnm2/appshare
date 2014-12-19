@@ -20,9 +20,11 @@
   },
   "devDependencies": {},
   "scripts": {
-    "watch": "watchify js/app.js -o js/bundle.js",
+    "watch-index": "watchify js/index.js -o js/index.bundle.js",
+    "watch-search": "watchify js/search.js -o js/search.bundle.js",
+    "watch-favorites": "watchify js/favorites.js -o js/favorites.bundle.js",
     "watch-server": "supervisor js/server.js",
-    "start": "npm run watch & npm run watch-server"
+    "start": "npm run watch-index & npm run watch-search & npm run watch-favorites & npm run watch-server"
   },
   "browserify": {
     "transform": [

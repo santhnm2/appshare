@@ -3,12 +3,8 @@
  */
 
 var React = require('react');
-var Nav = require('react-bootstrap/Nav');
+var NavbarWrapper = require('./NavbarWrapper.react');
 var Panel = require('react-bootstrap/Panel');
-var Navbar = require('react-bootstrap/Navbar');
-var DropdownButton = require('react-bootstrap/DropdownButton');
-var NavItem = require('react-bootstrap/NavItem');
-var MenuItem = require('react-bootstrap/MenuItem');
 var Input = require('react-bootstrap/Input');
 var Button = require('react-bootstrap/Button');
 var Itunes = require('./Itunes');
@@ -91,9 +87,9 @@ var Search = React.createClass({
 		var searchStyle = {"marginTop":"10%"};
 		var panelGroupStyle = {"marginTop": "50px", "textAlign": "center", "clear": "both"};
 		var panelStyle = {"height": "200px", "width": "200px", "display": "inline-block", "marginLeft": "10px", "marginRight": "10px"};
-		var textPanelStyle = {"maxHeight": "100px", 
+		var textPanelStyle = {"maxHeight": "60px", 
 							  "maxWidth": "200px", 
-							  "minHeight": "100px", 
+							  "minHeight": "60px", 
 							  "minWidth": "200px", 
 							  "display": "inline-block", 
 							  "marginLeft": "10px", 
@@ -103,16 +99,7 @@ var Search = React.createClass({
 							};
 		return(
 			<div>
-				<Navbar fixedTop fluid brand="Appshare" role="navigation">
-					<Nav>
-						<NavItem eventKey={1} href="friends.html">My Friends</NavItem>
-        				<NavItem eventKey={2} href="favorites.html">My Favorites</NavItem>
-        				<NavItem eventKey={3} href="search.html">Search</NavItem>
-        				<DropdownButton eventKey={4} title="Account">
-        					<MenuItem eventKey="1" href="#">Sign out</MenuItem>
-        				</DropdownButton>
-					</Nav>
-				</Navbar>
+				<NavbarWrapper />
 				<form style={searchStyle}>
 					<Input ref="searchBox" type="text" placeholder="Search for an app..." onChange={this._handleChange} onKeyDown={this._handleKeyDown}/>
 				</form>

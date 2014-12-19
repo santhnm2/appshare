@@ -78,7 +78,6 @@ app.post('/api/login', function(req, res) {
   var password = req.body['pass'];
   connection.query('SELECT * FROM Users WHERE email = "'+email+'" AND password = "'+password+'"', function(err, rows) {
     if (rows.length == 1) {
-      console.log("SERVER SIDE SUCCESS");
       res.send(JSON.stringify({"status": "success"}));
     } else {
       res.send(JSON.stringify({"status": "error"}));

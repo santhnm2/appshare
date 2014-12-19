@@ -5,9 +5,14 @@
 var React = require('react');
 var Input = require('react-bootstrap/Input');
 var Button = require('react-bootstrap/Button');
+var Label = require('react-bootstrap/Label');
 var xhr = require('./xhr');
 
 var Index = React.createClass({
+	getInitialState: function() {
+		return {invalidLogin: false};
+	},
+
 	_onRegisterSubmit: function() {
 
 
@@ -21,15 +26,8 @@ var Index = React.createClass({
 			if (data['status'] === 'success') {
 				window.location.assign('/search.html');
 			} else {
-				
+				window.alert("Invalid credentials. Please try again.")
 			}
-			// console.log(data);
-			// if(data['status'] === 'success') {
-			// 	console.log("SUCCESS");
-			// 				// } else {
-			// 	console.log("FAIL");
-			// }
-
 		}.bind(this));
 		event.preventDefault();
 	},
@@ -49,7 +47,9 @@ var Index = React.createClass({
 						<Input type="email" ref="register-email" className="form-control" required placeholder="Email address"/>
 						<Input type="password" ref="register-pass" className="form-control" placeholder="Password"/>
 						<Button type="submit" bsStyle="primary" onClick={this._onRegisterSubmit}>Sign up</Button>
+
 					</form>
+					
 				</div>
 				<div>
 					<img id="iphone" src ="res/iphone.png"/>
@@ -62,6 +62,7 @@ var Index = React.createClass({
 						<Button type="submit" bsStyle="primary" onClick={this._onSigninSubmit}>Sign in</Button>
 					</form>
 				</div>
+				
 			</div>
 		);			
 	}
