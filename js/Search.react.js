@@ -4,6 +4,7 @@
 
 var React = require('react');
 var Nav = require('react-bootstrap/Nav');
+var Panel = require('react-bootstrap/Panel');
 var Navbar = require('react-bootstrap/Navbar');
 var DropdownButton = require('react-bootstrap/DropdownButton');
 var NavItem = require('react-bootstrap/NavItem');
@@ -11,27 +12,30 @@ var MenuItem = require('react-bootstrap/MenuItem');
 var Input = require('react-bootstrap/Input');
 var Button = require('react-bootstrap/Button');
 var Itunes = require('./Itunes');
+
 var xhr = require('./xhr');
 //var XMLHttpRequest = require('xhr2');
 
 var Search = React.createClass({
 	getInitialState: function() {
 		return {
-			"searchTerm": null,
-			"searchResults": null
+			searchTerm: null,
+			searchResults: null,
+			apps: [
+				{'name': '', 'img': 'res/default.png'}, 
+				{'name': '', 'img': 'res/default.png'}, 
+				{'name': '', 'img': 'res/default.png'},
+				{'name': '', 'img': 'res/default.png'},
+				{'name': '', 'img': 'res/default.png'}
+			]
 		};
 	},
 	
 	_handleSubmit: function(event) {
 		xhr('POST', 'api/itunes', {'searchTerm': this.state.searchTerm})
 		.success(function(data) {
-			console.log(data);
-			console.log("succeeded in search");
+			this.parseData(data['results']);
 		}.bind(this));
-		// var xmlhttp = new XMLHttpRequest();
-		// xmlhttp.open("POST","api/itunes",true);
-		// xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		// xmlhttp.send("fname=Henry&lname=Ford");
 		event.preventDefault();
     },
 
@@ -45,8 +49,45 @@ var Search = React.createClass({
         }
     },
 
+    parseData: function(data) {
+    	var numResults = Object.keys(data).length;
+    	var lim = (numResults < 5) ? numResults : 5;
+
+    	this.setState({
+    			apps: [
+    				{
+    					'name': data[0]['trackCensoredName'],
+    					'img': data[0]['artworkUrl512']
+    				},
+    				{
+    					'name': data[1]['trackCensoredName'],
+    					'img': data[1]['artworkUrl512']
+    				},
+    				{
+    					'name': data[2]['trackCensoredName'],
+    					'img': data[2]['artworkUrl512']
+    				},
+    				{
+    					'name': data[3]['trackCensoredName'],
+    					'img': data[3]['artworkUrl512']
+    				},
+    				{
+    					'name': data[4]['trackCensoredName'],
+    					'img': data[4]['artworkUrl512']
+    				}
+    			]
+    		});
+    	// for (var i = 0; i < lim; i++) {
+    	// 	this.setState({apps[i]['name']: data[i]['trackCensoredName']});
+    	//  	this.setState({apps[i]['img']: data[i]['artworkUrl512']});
+    	// }
+    	this.render();
+    },
+
 	render: function() {
 		var searchStyle = {"marginTop":"10%"};
+		var panelGroupStyle = {"marginTop": "50px", "textAlign": "center"};
+		var panelStyle = {"height": "300px", "width": "200px", "display": "inline-block", "marginLeft": "10px", "marginRight": "10px"};
 		return(
 			<div>
 				<Navbar fixedTop fluid brand="Appshare" role="navigation">
@@ -62,10 +103,33 @@ var Search = React.createClass({
 				<form style={searchStyle}>
 					<Input ref="searchBox" type="text" placeholder="Search for an app..." onChange={this._handleChange} onKeyDown={this._handleKeyDown}/>
 				</form>
-				
+				<div style={panelGroupStyle}>
+					<Panel style={panelStyle} footer={this.state.apps[0]['name']}>
+						<img height="175px" width="175px" src={this.state.apps[0]['img']}/>
+					</Panel>
+					<Panel style={panelStyle} footer={this.state.apps[1]['name']}>
+						<img height="175px" width="175px" src={this.state.apps[1]['img']}/>
+					</Panel>
+					<Panel style={panelStyle} footer={this.state.apps[2]['name']}>
+						<img height="175px" width="175px" src={this.state.apps[2]['img']}/>
+					</Panel>
+					<Panel style={panelStyle} footer={this.state.apps[3]['name']}>
+						<img height="175px" width="175px" src={this.state.apps[3]['img']}/>
+					</Panel>
+					<Panel style={panelStyle} footer={this.state.apps[4]['name']}>
+						<img height="175px" width="175px" src={this.state.apps[4]['img']}/>
+					</Panel>
+				</div>
 			</div>
 		);
 	}
 });
+
+// <img height="175px" width="175px" src={this.state.imageURL[0]}/>
+// 					<img height="175px" width="175px" src={this.state.imageURL[1]}/>
+// 					<img height="175px" width="175px" src={this.state.imageURL[2]}/>
+// 					<img height="175px" width="175px" src={this.state.imageURL[3]}/>
+// 					<img height="175px" width="175px" src={this.state.imageURL[4]}/>
+
 
 module.exports = Search;

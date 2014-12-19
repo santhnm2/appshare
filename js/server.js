@@ -68,7 +68,6 @@ function reqListener() {
 app.post('/api/itunes', function(req, res) {
 	var searchTerm = req.body['searchTerm'];
 	var URL = Itunes.getURL(searchTerm);
-	console.log('test');
 	xhr('GET', URL).success(function(data){
 		// console.log(data);
 		res.json(data);

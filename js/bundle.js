@@ -35,6 +35,7 @@ module.exports = {getURL: getURL};
 
 var React = require('react');
 var Nav = require('react-bootstrap/Nav');
+var Panel = require('react-bootstrap/Panel');
 var Navbar = require('react-bootstrap/Navbar');
 var DropdownButton = require('react-bootstrap/DropdownButton');
 var NavItem = require('react-bootstrap/NavItem');
@@ -42,27 +43,30 @@ var MenuItem = require('react-bootstrap/MenuItem');
 var Input = require('react-bootstrap/Input');
 var Button = require('react-bootstrap/Button');
 var Itunes = require('./Itunes');
+
 var xhr = require('./xhr');
 //var XMLHttpRequest = require('xhr2');
 
 var Search = React.createClass({displayName: "Search",
 	getInitialState: function() {
 		return {
-			"searchTerm": null,
-			"searchResults": null
+			searchTerm: null,
+			searchResults: null,
+			apps: [
+				{'name': '', 'img': 'res/default.png'}, 
+				{'name': '', 'img': 'res/default.png'}, 
+				{'name': '', 'img': 'res/default.png'},
+				{'name': '', 'img': 'res/default.png'},
+				{'name': '', 'img': 'res/default.png'}
+			]
 		};
 	},
 	
 	_handleSubmit: function(event) {
 		xhr('POST', 'api/itunes', {'searchTerm': this.state.searchTerm})
 		.success(function(data) {
-			console.log(data);
-			console.log("succeeded in search");
+			this.parseData(data['results']);
 		}.bind(this));
-		// var xmlhttp = new XMLHttpRequest();
-		// xmlhttp.open("POST","api/itunes",true);
-		// xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		// xmlhttp.send("fname=Henry&lname=Ford");
 		event.preventDefault();
     },
 
@@ -76,8 +80,45 @@ var Search = React.createClass({displayName: "Search",
         }
     },
 
+    parseData: function(data) {
+    	var numResults = Object.keys(data).length;
+    	var lim = (numResults < 5) ? numResults : 5;
+
+    	this.setState({
+    			apps: [
+    				{
+    					'name': data[0]['trackCensoredName'],
+    					'img': data[0]['artworkUrl512']
+    				},
+    				{
+    					'name': data[1]['trackCensoredName'],
+    					'img': data[1]['artworkUrl512']
+    				},
+    				{
+    					'name': data[2]['trackCensoredName'],
+    					'img': data[2]['artworkUrl512']
+    				},
+    				{
+    					'name': data[3]['trackCensoredName'],
+    					'img': data[3]['artworkUrl512']
+    				},
+    				{
+    					'name': data[4]['trackCensoredName'],
+    					'img': data[4]['artworkUrl512']
+    				}
+    			]
+    		});
+    	// for (var i = 0; i < lim; i++) {
+    	// 	this.setState({apps[i]['name']: data[i]['trackCensoredName']});
+    	//  	this.setState({apps[i]['img']: data[i]['artworkUrl512']});
+    	// }
+    	this.render();
+    },
+
 	render: function() {
 		var searchStyle = {"marginTop":"10%"};
+		var panelGroupStyle = {"marginTop": "50px", "textAlign": "center"};
+		var panelStyle = {"height": "300px", "width": "200px", "display": "inline-block", "marginLeft": "10px", "marginRight": "10px"};
 		return(
 			React.createElement("div", null, 
 				React.createElement(Navbar, {fixedTop: true, fluid: true, brand: "Appshare", role: "navigation"}, 
@@ -92,15 +133,38 @@ var Search = React.createClass({displayName: "Search",
 				), 
 				React.createElement("form", {style: searchStyle}, 
 					React.createElement(Input, {ref: "searchBox", type: "text", placeholder: "Search for an app...", onChange: this._handleChange, onKeyDown: this._handleKeyDown})
+				), 
+				React.createElement("div", {style: panelGroupStyle}, 
+					React.createElement(Panel, {style: panelStyle, footer: this.state.apps[0]['name']}, 
+						React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[0]['img']})
+					), 
+					React.createElement(Panel, {style: panelStyle, footer: this.state.apps[1]['name']}, 
+						React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[1]['img']})
+					), 
+					React.createElement(Panel, {style: panelStyle, footer: this.state.apps[2]['name']}, 
+						React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[2]['img']})
+					), 
+					React.createElement(Panel, {style: panelStyle, footer: this.state.apps[3]['name']}, 
+						React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[3]['img']})
+					), 
+					React.createElement(Panel, {style: panelStyle, footer: this.state.apps[4]['name']}, 
+						React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[4]['img']})
+					)
 				)
-				
 			)
 		);
 	}
 });
 
+// <img height="175px" width="175px" src={this.state.imageURL[0]}/>
+// 					<img height="175px" width="175px" src={this.state.imageURL[1]}/>
+// 					<img height="175px" width="175px" src={this.state.imageURL[2]}/>
+// 					<img height="175px" width="175px" src={this.state.imageURL[3]}/>
+// 					<img height="175px" width="175px" src={this.state.imageURL[4]}/>
+
+
 module.exports = Search;
-},{"./Itunes":"/home/santhnm2/appshare/js/Itunes.js","./xhr":"/home/santhnm2/appshare/js/xhr.js","react":"/home/santhnm2/appshare/node_modules/react/react.js","react-bootstrap/Button":"/home/santhnm2/appshare/node_modules/react-bootstrap/Button.js","react-bootstrap/DropdownButton":"/home/santhnm2/appshare/node_modules/react-bootstrap/DropdownButton.js","react-bootstrap/Input":"/home/santhnm2/appshare/node_modules/react-bootstrap/Input.js","react-bootstrap/MenuItem":"/home/santhnm2/appshare/node_modules/react-bootstrap/MenuItem.js","react-bootstrap/Nav":"/home/santhnm2/appshare/node_modules/react-bootstrap/Nav.js","react-bootstrap/NavItem":"/home/santhnm2/appshare/node_modules/react-bootstrap/NavItem.js","react-bootstrap/Navbar":"/home/santhnm2/appshare/node_modules/react-bootstrap/Navbar.js"}],"/home/santhnm2/appshare/js/search.js":[function(require,module,exports){
+},{"./Itunes":"/home/santhnm2/appshare/js/Itunes.js","./xhr":"/home/santhnm2/appshare/js/xhr.js","react":"/home/santhnm2/appshare/node_modules/react/react.js","react-bootstrap/Button":"/home/santhnm2/appshare/node_modules/react-bootstrap/Button.js","react-bootstrap/DropdownButton":"/home/santhnm2/appshare/node_modules/react-bootstrap/DropdownButton.js","react-bootstrap/Input":"/home/santhnm2/appshare/node_modules/react-bootstrap/Input.js","react-bootstrap/MenuItem":"/home/santhnm2/appshare/node_modules/react-bootstrap/MenuItem.js","react-bootstrap/Nav":"/home/santhnm2/appshare/node_modules/react-bootstrap/Nav.js","react-bootstrap/NavItem":"/home/santhnm2/appshare/node_modules/react-bootstrap/NavItem.js","react-bootstrap/Navbar":"/home/santhnm2/appshare/node_modules/react-bootstrap/Navbar.js","react-bootstrap/Panel":"/home/santhnm2/appshare/node_modules/react-bootstrap/Panel.js"}],"/home/santhnm2/appshare/js/search.js":[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
@@ -1399,7 +1463,154 @@ var Navbar = React.createClass({displayName: 'Navbar',
 
 module.exports = Navbar;
 
-},{"./BootstrapMixin":"/home/santhnm2/appshare/node_modules/react-bootstrap/BootstrapMixin.js","./Nav":"/home/santhnm2/appshare/node_modules/react-bootstrap/Nav.js","./utils/ValidComponentChildren":"/home/santhnm2/appshare/node_modules/react-bootstrap/utils/ValidComponentChildren.js","./utils/classSet":"/home/santhnm2/appshare/node_modules/react-bootstrap/utils/classSet.js","./utils/cloneWithProps":"/home/santhnm2/appshare/node_modules/react-bootstrap/utils/cloneWithProps.js","./utils/createChainedFunction":"/home/santhnm2/appshare/node_modules/react-bootstrap/utils/createChainedFunction.js","./utils/joinClasses":"/home/santhnm2/appshare/node_modules/react-bootstrap/utils/joinClasses.js","react":"/home/santhnm2/appshare/node_modules/react/react.js"}],"/home/santhnm2/appshare/node_modules/react-bootstrap/constants.js":[function(require,module,exports){
+},{"./BootstrapMixin":"/home/santhnm2/appshare/node_modules/react-bootstrap/BootstrapMixin.js","./Nav":"/home/santhnm2/appshare/node_modules/react-bootstrap/Nav.js","./utils/ValidComponentChildren":"/home/santhnm2/appshare/node_modules/react-bootstrap/utils/ValidComponentChildren.js","./utils/classSet":"/home/santhnm2/appshare/node_modules/react-bootstrap/utils/classSet.js","./utils/cloneWithProps":"/home/santhnm2/appshare/node_modules/react-bootstrap/utils/cloneWithProps.js","./utils/createChainedFunction":"/home/santhnm2/appshare/node_modules/react-bootstrap/utils/createChainedFunction.js","./utils/joinClasses":"/home/santhnm2/appshare/node_modules/react-bootstrap/utils/joinClasses.js","react":"/home/santhnm2/appshare/node_modules/react/react.js"}],"/home/santhnm2/appshare/node_modules/react-bootstrap/Panel.js":[function(require,module,exports){
+var React = require('react');
+var joinClasses = require('./utils/joinClasses');
+var classSet = require('./utils/classSet');
+var cloneWithProps = require('./utils/cloneWithProps');
+
+var BootstrapMixin = require('./BootstrapMixin');
+var CollapsableMixin = require('./CollapsableMixin');
+
+var Panel = React.createClass({displayName: 'Panel',
+  mixins: [BootstrapMixin, CollapsableMixin],
+
+  propTypes: {
+    onSelect: React.PropTypes.func,
+    header: React.PropTypes.node,
+    footer: React.PropTypes.node,
+    eventKey: React.PropTypes.any
+  },
+
+  getDefaultProps: function () {
+    return {
+      bsClass: 'panel',
+      bsStyle: 'default'
+    };
+  },
+
+  handleSelect: function (e) {
+    if (this.props.onSelect) {
+      this._isChanging = true;
+      this.props.onSelect(this.props.eventKey);
+      this._isChanging = false;
+    }
+
+    e.preventDefault();
+
+    this.setState({
+      expanded: !this.state.expanded
+    });
+  },
+
+  shouldComponentUpdate: function () {
+    return !this._isChanging;
+  },
+
+  getCollapsableDimensionValue: function () {
+    return this.refs.body.getDOMNode().offsetHeight;
+  },
+
+  getCollapsableDOMNode: function () {
+    if (!this.isMounted() || !this.refs || !this.refs.panel) {
+      return null;
+    }
+
+    return this.refs.panel.getDOMNode();
+  },
+
+  render: function () {
+    var classes = this.getBsClassSet();
+    classes['panel'] = true;
+
+    return (
+      React.createElement("div", React.__spread({},  this.props, {className: joinClasses(this.props.className, classSet(classes)), 
+        id: this.props.collapsable ? null : this.props.id, onSelect: null}), 
+        this.renderHeading(), 
+        this.props.collapsable ? this.renderCollapsableBody() : this.renderBody(), 
+        this.renderFooter()
+      )
+    );
+  },
+
+  renderCollapsableBody: function () {
+    return (
+      React.createElement("div", {className: classSet(this.getCollapsableClassSet('panel-collapse')), id: this.props.id, ref: "panel"}, 
+        this.renderBody()
+      )
+    );
+  },
+
+  renderBody: function () {
+    return (
+      React.createElement("div", {className: "panel-body", ref: "body"}, 
+        this.props.children
+      )
+    );
+  },
+
+  renderHeading: function () {
+    var header = this.props.header;
+
+    if (!header) {
+      return null;
+    }
+
+    if (!React.isValidElement(header) || Array.isArray(header)) {
+      header = this.props.collapsable ?
+        this.renderCollapsableTitle(header) : header;
+    } else if (this.props.collapsable) {
+      header = cloneWithProps(header, {
+        className: 'panel-title',
+        children: this.renderAnchor(header.props.children)
+      });
+    } else {
+      header = cloneWithProps(header, {
+        className: 'panel-title'
+      });
+    }
+
+    return (
+      React.createElement("div", {className: "panel-heading"}, 
+        header
+      )
+    );
+  },
+
+  renderAnchor: function (header) {
+    return (
+      React.createElement("a", {
+        href: '#' + (this.props.id || ''), 
+        className: this.isExpanded() ? null : 'collapsed', 
+        onClick: this.handleSelect}, 
+        header
+      )
+    );
+  },
+
+  renderCollapsableTitle: function (header) {
+    return (
+      React.createElement("h4", {className: "panel-title"}, 
+        this.renderAnchor(header)
+      )
+    );
+  },
+
+  renderFooter: function () {
+    if (!this.props.footer) {
+      return null;
+    }
+
+    return (
+      React.createElement("div", {className: "panel-footer"}, 
+        this.props.footer
+      )
+    );
+  }
+});
+
+module.exports = Panel;
+},{"./BootstrapMixin":"/home/santhnm2/appshare/node_modules/react-bootstrap/BootstrapMixin.js","./CollapsableMixin":"/home/santhnm2/appshare/node_modules/react-bootstrap/CollapsableMixin.js","./utils/classSet":"/home/santhnm2/appshare/node_modules/react-bootstrap/utils/classSet.js","./utils/cloneWithProps":"/home/santhnm2/appshare/node_modules/react-bootstrap/utils/cloneWithProps.js","./utils/joinClasses":"/home/santhnm2/appshare/node_modules/react-bootstrap/utils/joinClasses.js","react":"/home/santhnm2/appshare/node_modules/react/react.js"}],"/home/santhnm2/appshare/node_modules/react-bootstrap/constants.js":[function(require,module,exports){
 module.exports = {
   CLASSES: {
     'alert': 'alert',
