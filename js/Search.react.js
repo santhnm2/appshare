@@ -86,8 +86,18 @@ var Search = React.createClass({
 
 	render: function() {
 		var searchStyle = {"marginTop":"10%"};
-		var panelGroupStyle = {"marginTop": "50px", "textAlign": "center"};
-		var panelStyle = {"height": "300px", "width": "200px", "display": "inline-block", "marginLeft": "10px", "marginRight": "10px"};
+		var panelGroupStyle = {"marginTop": "50px", "textAlign": "center", "clear": "both"};
+		var panelStyle = {"height": "200px", "width": "200px", "display": "inline-block", "marginLeft": "10px", "marginRight": "10px"};
+		var textPanelStyle = {"maxHeight": "100px", 
+							  "maxWidth": "200px", 
+							  "minHeight": "100px", 
+							  "minWidth": "200px", 
+							  "display": "inline-block", 
+							  "marginLeft": "10px", 
+							  "marginRight": "10px", 
+							  "overflow": "hidden",
+							  "position": "inherit"
+							};
 		return(
 			<div>
 				<Navbar fixedTop fluid brand="Appshare" role="navigation">
@@ -104,22 +114,42 @@ var Search = React.createClass({
 					<Input ref="searchBox" type="text" placeholder="Search for an app..." onChange={this._handleChange} onKeyDown={this._handleKeyDown}/>
 				</form>
 				<div style={panelGroupStyle}>
-					<Panel style={panelStyle} footer={this.state.apps[0]['name']}>
-						<img height="175px" width="175px" src={this.state.apps[0]['img']}/>
-					</Panel>
-					<Panel style={panelStyle} footer={this.state.apps[1]['name']}>
-						<img height="175px" width="175px" src={this.state.apps[1]['img']}/>
-					</Panel>
-					<Panel style={panelStyle} footer={this.state.apps[2]['name']}>
-						<img height="175px" width="175px" src={this.state.apps[2]['img']}/>
-					</Panel>
-					<Panel style={panelStyle} footer={this.state.apps[3]['name']}>
-						<img height="175px" width="175px" src={this.state.apps[3]['img']}/>
-					</Panel>
-					<Panel style={panelStyle} footer={this.state.apps[4]['name']}>
-						<img height="175px" width="175px" src={this.state.apps[4]['img']}/>
-					</Panel>
+					<div>
+						<Panel style={panelStyle}>
+							<img height="175px" width="175px" src={this.state.apps[0]['img']}/>
+						</Panel>
+						<Panel style={panelStyle}>
+							<img height="175px" width="175px" src={this.state.apps[1]['img']}/>
+						</Panel>
+						<Panel style={panelStyle}>
+							<img height="175px" width="175px" src={this.state.apps[2]['img']}/>
+						</Panel>
+						<Panel style={panelStyle}>
+							<img height="175px" width="175px" src={this.state.apps[3]['img']}/>
+						</Panel>
+						<Panel style={panelStyle}>
+							<img height="175px" width="175px" src={this.state.apps[4]['img']}/>
+						</Panel>
+					</div>
+					<div>
+						<Panel style={textPanelStyle}>
+							{this.state.apps[0]['name']}
+						</Panel>
+						<Panel style={textPanelStyle}>
+							{this.state.apps[1]['name']}
+						</Panel>
+						<Panel style={textPanelStyle}>
+							{this.state.apps[2]['name']}
+						</Panel>
+						<Panel style={textPanelStyle}>
+							{this.state.apps[3]['name']}
+						</Panel>
+						<Panel style={textPanelStyle}>
+							{this.state.apps[4]['name']}
+						</Panel>
+					</div>
 				</div>
+				
 			</div>
 		);
 	}

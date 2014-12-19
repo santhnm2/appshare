@@ -117,8 +117,18 @@ var Search = React.createClass({displayName: "Search",
 
 	render: function() {
 		var searchStyle = {"marginTop":"10%"};
-		var panelGroupStyle = {"marginTop": "50px", "textAlign": "center"};
-		var panelStyle = {"height": "300px", "width": "200px", "display": "inline-block", "marginLeft": "10px", "marginRight": "10px"};
+		var panelGroupStyle = {"marginTop": "50px", "textAlign": "center", "clear": "both"};
+		var panelStyle = {"height": "200px", "width": "200px", "display": "inline-block", "marginLeft": "10px", "marginRight": "10px"};
+		var textPanelStyle = {"maxHeight": "100px", 
+							  "maxWidth": "200px", 
+							  "minHeight": "100px", 
+							  "minWidth": "200px", 
+							  "display": "inline-block", 
+							  "marginLeft": "10px", 
+							  "marginRight": "10px", 
+							  "overflow": "hidden",
+							  "position": "inherit"
+							};
 		return(
 			React.createElement("div", null, 
 				React.createElement(Navbar, {fixedTop: true, fluid: true, brand: "Appshare", role: "navigation"}, 
@@ -135,22 +145,42 @@ var Search = React.createClass({displayName: "Search",
 					React.createElement(Input, {ref: "searchBox", type: "text", placeholder: "Search for an app...", onChange: this._handleChange, onKeyDown: this._handleKeyDown})
 				), 
 				React.createElement("div", {style: panelGroupStyle}, 
-					React.createElement(Panel, {style: panelStyle, footer: this.state.apps[0]['name']}, 
-						React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[0]['img']})
+					React.createElement("div", null, 
+						React.createElement(Panel, {class: "box", style: panelStyle}, 
+							React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[0]['img']})
+						), 
+						React.createElement(Panel, {class: "box", style: panelStyle}, 
+							React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[1]['img']})
+						), 
+						React.createElement(Panel, {class: "box", style: panelStyle}, 
+							React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[2]['img']})
+						), 
+						React.createElement(Panel, {class: "box", style: panelStyle}, 
+							React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[3]['img']})
+						), 
+						React.createElement(Panel, {class: "box", style: panelStyle}, 
+							React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[4]['img']})
+						)
 					), 
-					React.createElement(Panel, {style: panelStyle, footer: this.state.apps[1]['name']}, 
-						React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[1]['img']})
-					), 
-					React.createElement(Panel, {style: panelStyle, footer: this.state.apps[2]['name']}, 
-						React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[2]['img']})
-					), 
-					React.createElement(Panel, {style: panelStyle, footer: this.state.apps[3]['name']}, 
-						React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[3]['img']})
-					), 
-					React.createElement(Panel, {style: panelStyle, footer: this.state.apps[4]['name']}, 
-						React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[4]['img']})
+					React.createElement("div", null, 
+						React.createElement(Panel, {style: textPanelStyle}, 
+							this.state.apps[0]['name']
+						), 
+						React.createElement(Panel, {style: textPanelStyle}, 
+							this.state.apps[1]['name']
+						), 
+						React.createElement(Panel, {style: textPanelStyle}, 
+							this.state.apps[2]['name']
+						), 
+						React.createElement(Panel, {style: textPanelStyle}, 
+							this.state.apps[3]['name']
+						), 
+						React.createElement(Panel, {style: textPanelStyle}, 
+							this.state.apps[4]['name']
+						)
 					)
 				)
+				
 			)
 		);
 	}
