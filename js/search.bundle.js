@@ -75,20 +75,21 @@ var xhr = require('./xhr');
 var Search = React.createClass({displayName: "Search",
 	getInitialState: function() {
 		return {
-			searchTerm: null,
-			searchResults: null,
+			searchComplete: false,
 			apps: [
-				{'name': '', 'img': 'res/default.png'}, 
-				{'name': '', 'img': 'res/default.png'}, 
-				{'name': '', 'img': 'res/default.png'},
-				{'name': '', 'img': 'res/default.png'},
-				{'name': '', 'img': 'res/default.png'}
-			]
+				{'name': '', 'url': '', 'img': 'res/default.png'}, 
+				{'name': '', 'url': '', 'img': 'res/default.png'}, 
+				{'name': '', 'url': '', 'img': 'res/default.png'},
+				{'name': '', 'url': '', 'img': 'res/default.png'},
+				{'name': '', 'url': '', 'img': 'res/default.png'}
+			],
 		};
 	},
 	
 	_handleSubmit: function(event) {
+		var searchTerm = this.refs.searchBox.getValue();
 		this.setState({
+			searchComplete: false,
 			apps: [
 				{'img': 'res/loading.gif'},
 				{'img': 'res/loading.gif'},
@@ -97,15 +98,16 @@ var Search = React.createClass({displayName: "Search",
 				{'img': 'res/loading.gif'}
 			]
 		});
-		xhr('POST', 'api/itunes', {'searchTerm': this.state.searchTerm})
+		xhr('POST', 'api/itunes', {'searchTerm': searchTerm})
 		.success(function(data) {
 			this.parseData(data['results']);
+			this.setState({searchComplete: true});
 		}.bind(this));
 		event.preventDefault();
     },
 
     _handleChange: function(evt) {
-        this.setState({searchTerm: evt.target.value});
+        //this.setState({searchTerm: evt.target.value});
     },
 
 	_handleKeyDown: function(evt) {
@@ -122,23 +124,28 @@ var Search = React.createClass({displayName: "Search",
 			apps: [
 				{
 					'name': data[0]['trackCensoredName'],
-					'img': data[0]['artworkUrl512']
+					'img': data[0]['artworkUrl512'],
+					'url': data[0]['trackViewUrl']
 				},
 				{
 					'name': data[1]['trackCensoredName'],
-					'img': data[1]['artworkUrl512']
+					'img': data[1]['artworkUrl512'],
+					'url': data[1]['trackViewUrl']
 				},
 				{
 					'name': data[2]['trackCensoredName'],
-					'img': data[2]['artworkUrl512']
+					'img': data[2]['artworkUrl512'],
+					'url': data[2]['trackViewUrl']
 				},
 				{
 					'name': data[3]['trackCensoredName'],
-					'img': data[3]['artworkUrl512']
+					'img': data[3]['artworkUrl512'],
+					'url': data[3]['trackViewUrl']
 				},
 				{
 					'name': data[4]['trackCensoredName'],
-					'img': data[4]['artworkUrl512']
+					'img': data[4]['artworkUrl512'],
+					'url': data[4]['trackViewUrl']
 				}
 			]
 		});
@@ -158,7 +165,14 @@ var Search = React.createClass({displayName: "Search",
 							  "marginRight": "10px", 
 							  "overflow": "auto",
 							  "verticalAlign": "middle",
+							  "backgroundColor": "#eee"
 							};
+		var buttonStyle = {
+			"width": "200px",
+			"marginLeft": "10px",
+			"marginRight": "10px",
+		};
+
 		return(
 			React.createElement("div", null, 
 				React.createElement(NavbarWrapper, null), 
@@ -185,20 +199,27 @@ var Search = React.createClass({displayName: "Search",
 					), 
 					React.createElement("div", null, 
 						React.createElement(Panel, {style: textPanelStyle}, 
-							this.state.apps[0]['name']
+							React.createElement("a", {href: this.state.apps[0]['url']}, this.state.apps[0]['name'])
 						), 
 						React.createElement(Panel, {style: textPanelStyle}, 
-							this.state.apps[1]['name']
+							React.createElement("a", {href: this.state.apps[1]['url']}, this.state.apps[1]['name'])
 						), 
 						React.createElement(Panel, {style: textPanelStyle}, 
-							this.state.apps[2]['name']
+							React.createElement("a", {href: this.state.apps[2]['url']}, this.state.apps[2]['name'])
 						), 
 						React.createElement(Panel, {style: textPanelStyle}, 
-							this.state.apps[3]['name']
+							React.createElement("a", {href: this.state.apps[3]['url']}, this.state.apps[3]['name'])
 						), 
 						React.createElement(Panel, {style: textPanelStyle}, 
-							this.state.apps[4]['name']
+							React.createElement("a", {href: this.state.apps[4]['url']}, this.state.apps[4]['name'])
 						)
+					), 
+					React.createElement("div", null, 
+						React.createElement(Button, {bsStyle: "primary", disabled: !this.state.searchComplete, style: buttonStyle}, "Favorite"), 
+						React.createElement(Button, {bsStyle: "primary", disabled: !this.state.searchComplete, style: buttonStyle}, "Favorite"), 
+						React.createElement(Button, {bsStyle: "primary", disabled: !this.state.searchComplete, style: buttonStyle}, "Favorite"), 
+						React.createElement(Button, {bsStyle: "primary", disabled: !this.state.searchComplete, style: buttonStyle}, "Favorite"), 
+						React.createElement(Button, {bsStyle: "primary", disabled: !this.state.searchComplete, style: buttonStyle}, "Favorite")
 					)
 				)
 				
