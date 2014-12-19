@@ -1,4 +1,62 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/santhnm2/appshare/js/Itunes.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/santhnm2/appshare/js/Index.react.js":[function(require,module,exports){
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react');
+var Input = require('react-bootstrap/Input');
+var Button = require('react-bootstrap/Button');
+
+var Index = React.createClass({displayName: "Index",
+	_onRegisterSubmit: function() {
+
+
+	},
+
+	_onSigninSubmit: function() {
+		event.preventDefault();
+		var email = this.refs.signinEmail.getValue();
+    	var pass = this.refs.signinPass.getValue();
+		console.log("email = " + email + ", pass = " + pass);	
+		xhr('POST', 'api/login/', {'email': email, 'pass': pass});
+	},
+
+	render: function() {
+		return (
+			React.createElement("div", {className: "container"}, 
+				React.createElement("div", {className: "welcome"}, 
+					React.createElement("h1", {className: "welcome-banner"}, "Welcome to Appshare"), 
+					React.createElement("h2", {className: "welcome-message"}, "The platform for sharing your favorite apps with your friends")
+				), 
+				React.createElement("div", {className: "form-group"}, 
+					React.createElement("form", {className: "form-register", role: "form"}, 
+						React.createElement("h2", {className: "form-register-heading"}, "Register"), 
+						React.createElement(Input, {type: "text", ref: "register-first", className: "form-control", required: true, placeholder: "First name"}), 
+						React.createElement(Input, {type: "text", ref: "register-last", className: "form-control", required: true, placeholder: "Last name"}), 
+						React.createElement(Input, {type: "email", ref: "register-email", className: "form-control", required: true, placeholder: "Email address"}), 
+						React.createElement(Input, {type: "password", ref: "register-pass", className: "form-control", placeholder: "Password"}), 
+						React.createElement(Button, {type: "submit", bsStyle: "primary", onClick: this._onRegisterSubmit}, "Sign up")
+					)
+				), 
+				React.createElement("div", null, 
+					React.createElement("img", {id: "iphone", src: "res/iphone.png"})
+				), 
+				React.createElement("div", {className: "form-group"}, 
+					React.createElement("form", {className: "form-signin", role: "form"}, 
+						React.createElement("h2", {className: "form-signin-heading"}, "Sign in"), 
+						React.createElement(Input, {type: "email", ref: "signinEmail", className: "form-control", required: true, placeholder: "Email address"}), 
+						React.createElement(Input, {type: "password", ref: "signinPass", className: "form-control", placeholder: "Password"}), 
+						React.createElement(Button, {type: "submit", bsStyle: "primary", onClick: this._onSigninSubmit}, "Sign in")
+					)
+				)
+			)
+		);			
+	}
+
+});
+
+module.exports = Index;
+},{"react":"/home/santhnm2/appshare/node_modules/react/react.js","react-bootstrap/Button":"/home/santhnm2/appshare/node_modules/react-bootstrap/Button.js","react-bootstrap/Input":"/home/santhnm2/appshare/node_modules/react-bootstrap/Input.js"}],"/home/santhnm2/appshare/js/Itunes.js":[function(require,module,exports){
 var BASE = 'https://itunes.apple.com/search/';
 
 function getURL(input) {
@@ -43,9 +101,7 @@ var MenuItem = require('react-bootstrap/MenuItem');
 var Input = require('react-bootstrap/Input');
 var Button = require('react-bootstrap/Button');
 var Itunes = require('./Itunes');
-
 var xhr = require('./xhr');
-//var XMLHttpRequest = require('xhr2');
 
 var Search = React.createClass({displayName: "Search",
 	getInitialState: function() {
@@ -85,33 +141,29 @@ var Search = React.createClass({displayName: "Search",
     	var lim = (numResults < 5) ? numResults : 5;
 
     	this.setState({
-    			apps: [
-    				{
-    					'name': data[0]['trackCensoredName'],
-    					'img': data[0]['artworkUrl512']
-    				},
-    				{
-    					'name': data[1]['trackCensoredName'],
-    					'img': data[1]['artworkUrl512']
-    				},
-    				{
-    					'name': data[2]['trackCensoredName'],
-    					'img': data[2]['artworkUrl512']
-    				},
-    				{
-    					'name': data[3]['trackCensoredName'],
-    					'img': data[3]['artworkUrl512']
-    				},
-    				{
-    					'name': data[4]['trackCensoredName'],
-    					'img': data[4]['artworkUrl512']
-    				}
-    			]
-    		});
-    	// for (var i = 0; i < lim; i++) {
-    	// 	this.setState({apps[i]['name']: data[i]['trackCensoredName']});
-    	//  	this.setState({apps[i]['img']: data[i]['artworkUrl512']});
-    	// }
+			apps: [
+				{
+					'name': data[0]['trackCensoredName'],
+					'img': data[0]['artworkUrl512']
+				},
+				{
+					'name': data[1]['trackCensoredName'],
+					'img': data[1]['artworkUrl512']
+				},
+				{
+					'name': data[2]['trackCensoredName'],
+					'img': data[2]['artworkUrl512']
+				},
+				{
+					'name': data[3]['trackCensoredName'],
+					'img': data[3]['artworkUrl512']
+				},
+				{
+					'name': data[4]['trackCensoredName'],
+					'img': data[4]['artworkUrl512']
+				}
+			]
+		});
     	this.render();
     },
 
@@ -186,25 +238,17 @@ var Search = React.createClass({displayName: "Search",
 	}
 });
 
-// <img height="175px" width="175px" src={this.state.imageURL[0]}/>
-// 					<img height="175px" width="175px" src={this.state.imageURL[1]}/>
-// 					<img height="175px" width="175px" src={this.state.imageURL[2]}/>
-// 					<img height="175px" width="175px" src={this.state.imageURL[3]}/>
-// 					<img height="175px" width="175px" src={this.state.imageURL[4]}/>
-
-
 module.exports = Search;
-},{"./Itunes":"/home/santhnm2/appshare/js/Itunes.js","./xhr":"/home/santhnm2/appshare/js/xhr.js","react":"/home/santhnm2/appshare/node_modules/react/react.js","react-bootstrap/Button":"/home/santhnm2/appshare/node_modules/react-bootstrap/Button.js","react-bootstrap/DropdownButton":"/home/santhnm2/appshare/node_modules/react-bootstrap/DropdownButton.js","react-bootstrap/Input":"/home/santhnm2/appshare/node_modules/react-bootstrap/Input.js","react-bootstrap/MenuItem":"/home/santhnm2/appshare/node_modules/react-bootstrap/MenuItem.js","react-bootstrap/Nav":"/home/santhnm2/appshare/node_modules/react-bootstrap/Nav.js","react-bootstrap/NavItem":"/home/santhnm2/appshare/node_modules/react-bootstrap/NavItem.js","react-bootstrap/Navbar":"/home/santhnm2/appshare/node_modules/react-bootstrap/Navbar.js","react-bootstrap/Panel":"/home/santhnm2/appshare/node_modules/react-bootstrap/Panel.js"}],"/home/santhnm2/appshare/js/search.js":[function(require,module,exports){
+},{"./Itunes":"/home/santhnm2/appshare/js/Itunes.js","./xhr":"/home/santhnm2/appshare/js/xhr.js","react":"/home/santhnm2/appshare/node_modules/react/react.js","react-bootstrap/Button":"/home/santhnm2/appshare/node_modules/react-bootstrap/Button.js","react-bootstrap/DropdownButton":"/home/santhnm2/appshare/node_modules/react-bootstrap/DropdownButton.js","react-bootstrap/Input":"/home/santhnm2/appshare/node_modules/react-bootstrap/Input.js","react-bootstrap/MenuItem":"/home/santhnm2/appshare/node_modules/react-bootstrap/MenuItem.js","react-bootstrap/Nav":"/home/santhnm2/appshare/node_modules/react-bootstrap/Nav.js","react-bootstrap/NavItem":"/home/santhnm2/appshare/node_modules/react-bootstrap/NavItem.js","react-bootstrap/Navbar":"/home/santhnm2/appshare/node_modules/react-bootstrap/Navbar.js","react-bootstrap/Panel":"/home/santhnm2/appshare/node_modules/react-bootstrap/Panel.js"}],"/home/santhnm2/appshare/js/app.js":[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react');
+var Index = require('./Index.react');
 var Search = require('./Search.react');
 
-React.render(
-	React.createElement(Search, null),
-	document.getElementById('search')
-);
-},{"./Search.react":"/home/santhnm2/appshare/js/Search.react.js","react":"/home/santhnm2/appshare/node_modules/react/react.js"}],"/home/santhnm2/appshare/js/xhr.js":[function(require,module,exports){
+React.render(React.createElement(Index, null), document.getElementById('index'));
+// React.render(<Search />, document.getElementById('search'));
+},{"./Index.react":"/home/santhnm2/appshare/js/Index.react.js","./Search.react":"/home/santhnm2/appshare/js/Search.react.js","react":"/home/santhnm2/appshare/node_modules/react/react.js"}],"/home/santhnm2/appshare/js/xhr.js":[function(require,module,exports){
 function parseIfJSON(data) {
   try {
     return JSON.parse(data);
@@ -20785,4 +20829,4 @@ module.exports = warning;
 },{"./emptyFunction":"/home/santhnm2/appshare/node_modules/react/lib/emptyFunction.js","_process":"/home/santhnm2/appshare/node_modules/browserify/node_modules/process/browser.js"}],"/home/santhnm2/appshare/node_modules/react/react.js":[function(require,module,exports){
 module.exports = require('./lib/React');
 
-},{"./lib/React":"/home/santhnm2/appshare/node_modules/react/lib/React.js"}]},{},["/home/santhnm2/appshare/js/search.js"]);
+},{"./lib/React":"/home/santhnm2/appshare/node_modules/react/lib/React.js"}]},{},["/home/santhnm2/appshare/js/app.js"]);

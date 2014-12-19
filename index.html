@@ -4,45 +4,9 @@
 	<title>Appshare</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/signin.css">
-	<script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="script.js"></script>
-	<script src="app.js"></script>
-
-	<!--<script src="bundle.js"></script>-->
 </head>
 <body>
-	<div class="container">
-		<div class="welcome">
-			<h1 class="welcome-banner">Welcome to Appshare</h1>
-			<h2 class="welcome-message">The platform for sharing your favorite apps with your friends</h2>
-		</div>
-		<div class="form-group">
-			<form class="form-register" role="form" onsubmit="Register()">
-				<h2 class="form-register-heading">Register</h2>
-				<label for="inputFirstName" class="sr-only">First></label>
-				<input type="text" id = "first" class="form-control" placeholder="First name"/>
-				<label for="inputLastName" class="sr-only">Last></label>
-				<input type="text" id = "last" class="form-control" placeholder="Last name"/>
-				<label for="inputEmail" class="sr-only">Email address</label>
-				<input type="email" id="email" class="form-control" placeholder="Email address" required autofocus>
-				<label for="inputPassword" class="sr-only">Password</label>
-				<input type="password" id="pass" class="form-control" placeholder="Password required">
-				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
-			</form>
-		</div>
-		<div class="iphone">
-			<img src="res/iphone.png" style="width:15%; height:45%; position: absolute; margin-left: 10%";>
-		</div>
-		<div class="form-group">
-			<form class="form-signin" role="form" id="sign-in-form">
-				<h2 class="form-signin-heading">Sign in</h2>
-				<label for="inputEmail" class="sr-only">Email address</label>
-				<input type="email" id="email2" class="form-control" placeholder="Email address" required autofocus>
-				<label for="inputPassword" class="sr-only">Password</label>
-				<input type="password" id="pass2" class="form-control" placeholder="Password required">
-				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-			</form>
-		</div>
-	</div>
+	<div id="index"></div>
+	<script src="js/bundle.js"></script>
 </body>
 </html>

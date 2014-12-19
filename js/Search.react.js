@@ -12,9 +12,7 @@ var MenuItem = require('react-bootstrap/MenuItem');
 var Input = require('react-bootstrap/Input');
 var Button = require('react-bootstrap/Button');
 var Itunes = require('./Itunes');
-
 var xhr = require('./xhr');
-//var XMLHttpRequest = require('xhr2');
 
 var Search = React.createClass({
 	getInitialState: function() {
@@ -54,33 +52,29 @@ var Search = React.createClass({
     	var lim = (numResults < 5) ? numResults : 5;
 
     	this.setState({
-    			apps: [
-    				{
-    					'name': data[0]['trackCensoredName'],
-    					'img': data[0]['artworkUrl512']
-    				},
-    				{
-    					'name': data[1]['trackCensoredName'],
-    					'img': data[1]['artworkUrl512']
-    				},
-    				{
-    					'name': data[2]['trackCensoredName'],
-    					'img': data[2]['artworkUrl512']
-    				},
-    				{
-    					'name': data[3]['trackCensoredName'],
-    					'img': data[3]['artworkUrl512']
-    				},
-    				{
-    					'name': data[4]['trackCensoredName'],
-    					'img': data[4]['artworkUrl512']
-    				}
-    			]
-    		});
-    	// for (var i = 0; i < lim; i++) {
-    	// 	this.setState({apps[i]['name']: data[i]['trackCensoredName']});
-    	//  	this.setState({apps[i]['img']: data[i]['artworkUrl512']});
-    	// }
+			apps: [
+				{
+					'name': data[0]['trackCensoredName'],
+					'img': data[0]['artworkUrl512']
+				},
+				{
+					'name': data[1]['trackCensoredName'],
+					'img': data[1]['artworkUrl512']
+				},
+				{
+					'name': data[2]['trackCensoredName'],
+					'img': data[2]['artworkUrl512']
+				},
+				{
+					'name': data[3]['trackCensoredName'],
+					'img': data[3]['artworkUrl512']
+				},
+				{
+					'name': data[4]['trackCensoredName'],
+					'img': data[4]['artworkUrl512']
+				}
+			]
+		});
     	this.render();
     },
 
@@ -154,12 +148,5 @@ var Search = React.createClass({
 		);
 	}
 });
-
-// <img height="175px" width="175px" src={this.state.imageURL[0]}/>
-// 					<img height="175px" width="175px" src={this.state.imageURL[1]}/>
-// 					<img height="175px" width="175px" src={this.state.imageURL[2]}/>
-// 					<img height="175px" width="175px" src={this.state.imageURL[3]}/>
-// 					<img height="175px" width="175px" src={this.state.imageURL[4]}/>
-
 
 module.exports = Search;

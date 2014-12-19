@@ -1,14 +1,36 @@
 var http = require('http');
 var express = require('express');
+var session = require('express-session');
+var SessionStore = require('express-mysql-session')
 var bodyParser = require('body-parser');
 var Itunes = require('./Itunes');
 var XMLHttpRequest = require('xhr2');
-//var xhr = require('./xhr');
 var app = express();
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-	extended: true
+  extended: true
 }));
+
+// var options = {
+//     host: 'engr-cpanel-mysql.engr.illinois.edu',
+//     port: 3306,
+//     user: 'rmukerj2_app',
+//     password: 'test1234',
+//     database: 'rmukerj2_appshare'
+// }
+
+// var sessionStore = new SessionStore(options);
+
+// app.use(session({
+//     key: 'session_cookie_name',
+//     secret: 'session_cookie_secret',
+//     store: sessionStore,
+//     resave: true,
+//     saveUninitialized: true
+// }));
+
+// var sess;
 
 function parseIfJSON(data) {
   try {
@@ -23,7 +45,7 @@ function xhr(type, url, data) {
     success: [],
     error: []
   };
-  var test = "force commit";
+
   var request = new XMLHttpRequest();
 
   request.open(type, url, true);
@@ -60,19 +82,30 @@ function xhr(type, url, data) {
 
 app.use('/', express.static(__dirname+'/../'));
 
-function reqListener() {
-	//console.log(this.responseText);
-	//console.log("successful search");
-}
+// app.get('/', function(req, res){
+//   sess = req.session;
+//   if(sess.email) {
+//     console.log("Should go to search.html");
+//     res.redirect('search.html');
+//   } else {
+//     res.render('index.html');
+//   }
+// })
+
+app.post('/api/login', function(req, res) {
+  sess = req.session;
+  sess.email = req.body.email;
+  res.end('done');
+});
 
 app.post('/api/itunes', function(req, res) {
 	var searchTerm = req.body['searchTerm'];
 	var URL = Itunes.getURL(searchTerm);
 	xhr('GET', URL).success(function(data){
-		// console.log(data);
 		res.json(data);
 	});
 });
+
 
 var port = process.argv[2] || 8000;
 app.listen(port);
