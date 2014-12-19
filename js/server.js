@@ -1,3 +1,15 @@
+var http = require('http');
+var express = require('express');
+var bodyParser = require('body-parser');
+var Itunes = require('./Itunes');
+var XMLHttpRequest = require('xhr2');
+//var xhr = require('./xhr');
+var app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+
 function parseIfJSON(data) {
   try {
     return JSON.parse(data);
@@ -11,10 +23,8 @@ function xhr(type, url, data) {
     success: [],
     error: []
   };
-
-  var request = XMLHttpRequest ?
-    new XMLHttpRequest() :
-    new ActiveXObject('MSXML2.XMLHTTP.3.0');
+  var test = "force commit";
+  var request = new XMLHttpRequest();
 
   request.open(type, url, true);
   request.setRequestHeader(
@@ -48,4 +58,24 @@ function xhr(type, url, data) {
   }
 }
 
-module.exports = xhr;
+app.use('/', express.static(__dirname+'/../'));
+
+function reqListener() {
+	//console.log(this.responseText);
+	//console.log("successful search");
+}
+
+app.post('/api/itunes', function(req, res) {
+	var searchTerm = req.body['searchTerm'];
+	var URL = Itunes.getURL(searchTerm);
+	console.log('test');
+	xhr('GET', URL).success(function(data){
+		// console.log(data);
+		res.json(data);
+	});
+});
+
+var port = process.argv[2] || 8000;
+app.listen(port);
+
+console.log("listening on port " + port);

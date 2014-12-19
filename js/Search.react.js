@@ -12,6 +12,7 @@ var Input = require('react-bootstrap/Input');
 var Button = require('react-bootstrap/Button');
 var Itunes = require('./Itunes');
 var xhr = require('./xhr');
+//var XMLHttpRequest = require('xhr2');
 
 var Search = React.createClass({
 	getInitialState: function() {
@@ -21,16 +22,17 @@ var Search = React.createClass({
 		};
 	},
 	
-	_handleSubmit: function() {
-		var URL = Itunes.getURL(this.state.searchTerm);
-		console.log('itunes url is ' + URL);
-		xhr('GET', URL)
-	   	.success(function(data) {
-    		this.setState({searchResults: data})
-    	}.bind(this));
-    	
-        //console.log(this.refs.searchBox.getDOMNode().value);
-        //this.setState({text: ''});
+	_handleSubmit: function(event) {
+		xhr('POST', 'api/itunes', {'searchTerm': this.state.searchTerm})
+		.success(function(data) {
+			console.log(data);
+			console.log("succeeded in search");
+		}.bind(this));
+		// var xmlhttp = new XMLHttpRequest();
+		// xmlhttp.open("POST","api/itunes",true);
+		// xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		// xmlhttp.send("fname=Henry&lname=Ford");
+		event.preventDefault();
     },
 
     _handleChange: function(evt) {
@@ -39,7 +41,7 @@ var Search = React.createClass({
 
 	_handleKeyDown: function(evt) {
         if (evt.keyCode == 13 ) {
-            return this._handleSubmit();
+            return this._handleSubmit(evt);
         }
     },
 

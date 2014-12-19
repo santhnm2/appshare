@@ -3,7 +3,7 @@
 var React = require('react');
 var Search = require('./Search.react');
 
-React.renderComponent(
+React.render(
 	<Search />,
 	document.getElementById('search')
 );
