@@ -95,8 +95,8 @@ var Search = React.createClass({
 							  "display": "inline-block", 
 							  "marginLeft": "10px", 
 							  "marginRight": "10px", 
-							  "overflow": "hidden",
-							  "position": "inherit"
+							  "overflow": "auto",
+							  "verticalAlign": "middle",
 							};
 		return(
 			<div>

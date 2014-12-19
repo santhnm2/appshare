@@ -126,8 +126,8 @@ var Search = React.createClass({displayName: "Search",
 							  "display": "inline-block", 
 							  "marginLeft": "10px", 
 							  "marginRight": "10px", 
-							  "overflow": "hidden",
-							  "position": "inherit"
+							  "overflow": "auto",
+							  "verticalAlign": "middle",
 							};
 		return(
 			React.createElement("div", null, 
@@ -146,19 +146,19 @@ var Search = React.createClass({displayName: "Search",
 				), 
 				React.createElement("div", {style: panelGroupStyle}, 
 					React.createElement("div", null, 
-						React.createElement(Panel, {class: "box", style: panelStyle}, 
+						React.createElement(Panel, {style: panelStyle}, 
 							React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[0]['img']})
 						), 
-						React.createElement(Panel, {class: "box", style: panelStyle}, 
+						React.createElement(Panel, {style: panelStyle}, 
 							React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[1]['img']})
 						), 
-						React.createElement(Panel, {class: "box", style: panelStyle}, 
+						React.createElement(Panel, {style: panelStyle}, 
 							React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[2]['img']})
 						), 
-						React.createElement(Panel, {class: "box", style: panelStyle}, 
+						React.createElement(Panel, {style: panelStyle}, 
 							React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[3]['img']})
 						), 
-						React.createElement(Panel, {class: "box", style: panelStyle}, 
+						React.createElement(Panel, {style: panelStyle}, 
 							React.createElement("img", {height: "175px", width: "175px", src: this.state.apps[4]['img']})
 						)
 					), 
