@@ -5,6 +5,7 @@
 var React = require('react');
 var Input = require('react-bootstrap/Input');
 var Button = require('react-bootstrap/Button');
+var xhr = require('./xhr');
 
 var Index = React.createClass({
 	_onRegisterSubmit: function() {
@@ -13,11 +14,24 @@ var Index = React.createClass({
 	},
 
 	_onSigninSubmit: function() {
-		event.preventDefault();
 		var email = this.refs.signinEmail.getValue();
     	var pass = this.refs.signinPass.getValue();
 		console.log("email = " + email + ", pass = " + pass);	
-		xhr('POST', 'api/login/', {'email': email, 'pass': pass});
+		xhr('POST', 'api/login/', {'email': email, 'pass': pass}).success(function(data){
+			if (data['status'] === 'success') {
+				window.location.assign('/search.html');
+			} else {
+				
+			}
+			// console.log(data);
+			// if(data['status'] === 'success') {
+			// 	console.log("SUCCESS");
+			// 				// } else {
+			// 	console.log("FAIL");
+			// }
+
+		}.bind(this));
+		event.preventDefault();
 	},
 
 	render: function() {

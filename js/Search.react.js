@@ -30,6 +30,15 @@ var Search = React.createClass({
 	},
 	
 	_handleSubmit: function(event) {
+		this.setState({
+			apps: [
+				{'img': 'res/loading.gif'},
+				{'img': 'res/loading.gif'},
+				{'img': 'res/loading.gif'},
+				{'img': 'res/loading.gif'},
+				{'img': 'res/loading.gif'}
+			]
+		});
 		xhr('POST', 'api/itunes', {'searchTerm': this.state.searchTerm})
 		.success(function(data) {
 			this.parseData(data['results']);

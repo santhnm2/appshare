@@ -6,6 +6,7 @@
 var React = require('react');
 var Input = require('react-bootstrap/Input');
 var Button = require('react-bootstrap/Button');
+var xhr = require('./xhr');
 
 var Index = React.createClass({displayName: "Index",
 	_onRegisterSubmit: function() {
@@ -14,11 +15,24 @@ var Index = React.createClass({displayName: "Index",
 	},
 
 	_onSigninSubmit: function() {
-		event.preventDefault();
 		var email = this.refs.signinEmail.getValue();
     	var pass = this.refs.signinPass.getValue();
 		console.log("email = " + email + ", pass = " + pass);	
-		xhr('POST', 'api/login/', {'email': email, 'pass': pass});
+		xhr('POST', 'api/login/', {'email': email, 'pass': pass}).success(function(data){
+			if (data['status'] === 'success') {
+				window.location.assign('/search.html');
+			} else {
+				
+			}
+			// console.log(data);
+			// if(data['status'] === 'success') {
+			// 	console.log("SUCCESS");
+			// 				// } else {
+			// 	console.log("FAIL");
+			// }
+
+		}.bind(this));
+		event.preventDefault();
 	},
 
 	render: function() {
@@ -56,7 +70,7 @@ var Index = React.createClass({displayName: "Index",
 });
 
 module.exports = Index;
-},{"react":"/home/santhnm2/appshare/node_modules/react/react.js","react-bootstrap/Button":"/home/santhnm2/appshare/node_modules/react-bootstrap/Button.js","react-bootstrap/Input":"/home/santhnm2/appshare/node_modules/react-bootstrap/Input.js"}],"/home/santhnm2/appshare/js/Itunes.js":[function(require,module,exports){
+},{"./xhr":"/home/santhnm2/appshare/js/xhr.js","react":"/home/santhnm2/appshare/node_modules/react/react.js","react-bootstrap/Button":"/home/santhnm2/appshare/node_modules/react-bootstrap/Button.js","react-bootstrap/Input":"/home/santhnm2/appshare/node_modules/react-bootstrap/Input.js"}],"/home/santhnm2/appshare/js/Itunes.js":[function(require,module,exports){
 var BASE = 'https://itunes.apple.com/search/';
 
 function getURL(input) {
@@ -119,6 +133,15 @@ var Search = React.createClass({displayName: "Search",
 	},
 	
 	_handleSubmit: function(event) {
+		this.setState({
+			apps: [
+				{'img': 'res/loading.gif'},
+				{'img': 'res/loading.gif'},
+				{'img': 'res/loading.gif'},
+				{'img': 'res/loading.gif'},
+				{'img': 'res/loading.gif'}
+			]
+		});
 		xhr('POST', 'api/itunes', {'searchTerm': this.state.searchTerm})
 		.success(function(data) {
 			this.parseData(data['results']);
@@ -246,8 +269,8 @@ var React = require('react');
 var Index = require('./Index.react');
 var Search = require('./Search.react');
 
-React.render(React.createElement(Index, null), document.getElementById('index'));
-// React.render(<Search />, document.getElementById('search'));
+//React.render(<Index />, document.getElementById('index'));
+React.render(React.createElement(Search, null), document.getElementById('search'));
 },{"./Index.react":"/home/santhnm2/appshare/js/Index.react.js","./Search.react":"/home/santhnm2/appshare/js/Search.react.js","react":"/home/santhnm2/appshare/node_modules/react/react.js"}],"/home/santhnm2/appshare/js/xhr.js":[function(require,module,exports){
 function parseIfJSON(data) {
   try {

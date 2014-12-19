@@ -4,6 +4,7 @@ var session = require('express-session');
 var SessionStore = require('express-mysql-session')
 var bodyParser = require('body-parser');
 var Itunes = require('./Itunes');
+var mysql = require('mysql');
 var XMLHttpRequest = require('xhr2');
 var app = express();
 
@@ -12,25 +13,15 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-// var options = {
-//     host: 'engr-cpanel-mysql.engr.illinois.edu',
-//     port: 3306,
-//     user: 'rmukerj2_app',
-//     password: 'test1234',
-//     database: 'rmukerj2_appshare'
-// }
+var connection = mysql.createConnection({
+  host     : 'engr-cpanel-mysql.engr.illinois.edu',
+  user     : 'rmukerj2_app',
+  password : 'test1234'
+});
 
-// var sessionStore = new SessionStore(options);
+connection.query('USE rmukerj2_appshare');
 
-// app.use(session({
-//     key: 'session_cookie_name',
-//     secret: 'session_cookie_secret',
-//     store: sessionStore,
-//     resave: true,
-//     saveUninitialized: true
-// }));
-
-// var sess;
+app.set('port', 3000);
 
 function parseIfJSON(data) {
   try {
@@ -82,20 +73,17 @@ function xhr(type, url, data) {
 
 app.use('/', express.static(__dirname+'/../'));
 
-// app.get('/', function(req, res){
-//   sess = req.session;
-//   if(sess.email) {
-//     console.log("Should go to search.html");
-//     res.redirect('search.html');
-//   } else {
-//     res.render('index.html');
-//   }
-// })
-
 app.post('/api/login', function(req, res) {
-  sess = req.session;
-  sess.email = req.body.email;
-  res.end('done');
+  var email = req.body['email'];
+  var password = req.body['pass'];
+  connection.query('SELECT * FROM Users WHERE email = "'+email+'" AND password = "'+password+'"', function(err, rows) {
+    if (rows.length == 1) {
+      console.log("SERVER SIDE SUCCESS");
+      res.send(JSON.stringify({"status": "success"}));
+    } else {
+      res.send(JSON.stringify({"status": "error"}));
+    }
+  });
 });
 
 app.post('/api/itunes', function(req, res) {
