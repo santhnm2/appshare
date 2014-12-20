@@ -1,17 +1,36 @@
+var auth = require('./customAuth');
 var http = require('http');
 var express = require('express');
 var session = require('express-session');
 var SessionStore = require('express-mysql-session')
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var Itunes = require('./Itunes');
 var mysql = require('mysql');
 var XMLHttpRequest = require('xhr2');
+var passport = require('passport');
+var expressSession = require('express-session');
 var app = express();
+
+app.use(cookieParser());
+app.use(expressSession({
+  secret:'somesecrettokenhere',
+  resave: false,
+  saveUninitialized: true
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+app.get('/', function(req, res) {
+  if (req.session.email) {
+    res.sendFile('/search.html', { root: __dirname+'/../' });
+  } else {
+    res.sendFile('/index.html', { root: __dirname+'/../' });
+  }
+});
 
 var connection = mysql.createConnection({
   host     : 'engr-cpanel-mysql.engr.illinois.edu',
@@ -77,7 +96,8 @@ app.post('/api/login', function(req, res) {
   var email = req.body['email'];
   var pass = req.body['pass'];
   connection.query('SELECT * FROM Users WHERE email = "'+email+'" AND password = "'+pass+'"', function(err, rows) {
-    if (rows.length == 0) {
+    if (rows.length == 1) {
+      req.session.email = email;
       res.send(JSON.stringify({"status": "success"}));
     } else {
       res.send(JSON.stringify({"status": "error"}));
@@ -92,7 +112,8 @@ app.post('/api/register', function(req, res) {
   var pass = req.body['pass'];
   connection.query('SELECT * FROM Users WHERE email = "'+email+'"', function(err, rows) {
     if (rows.length == 0) {
-      connection.query('INSERT INTO Users (first, last, email, password) VALUES ("'+first+'", "'+last+'", "'+email+'", "'+pass+'")', function(err, rows) {
+      var query = 'INSERT INTO Users (first, last, email, password, favorites) VALUES ("'+first+'", "'+last+'", "'+email+'", "'+pass+', "")';
+      connection.query('INSERT INTO Users (first, last, email, password, favorites) VALUES ("'+first+'", "'+last+'", "'+email+'", "'+pass+'", "")', function(err, rows) {
         console.log('registration successful');
       });
       res.send(JSON.stringify({'status': 'success'}));
@@ -110,6 +131,43 @@ app.post('/api/itunes', function(req, res) {
 	});
 });
 
+app.post('/api/favorite', function(req, res) {
+  var sess = req.session;
+  if (!sess) {
+    res.send(JSON.stringify({'status': 'error'}));
+  } else {
+    var email = sess.email;
+    if (!email) {
+      res.send(JSON.stringify({'status': 'error'}));
+    } else {
+      connection.query('SELECT favorites FROM Users WHERE email = "'+email+'"', function(err, rows) {
+        var favorites = rows[0]['favorites'];
+        favorites = favorites === '' ? req.body['appname'] : favorites + '%:%' + req.body['appname'];
+        connection.query('UPDATE Users SET favorites = "'+favorites+'" WHERE email = "' + email + '"', function(err, rows) {
+          console.log('set favorites');
+        });
+      });
+      res.send({'status': 'success'});
+    }  
+  }  
+});
+
+app.get('/api/favorite', function(req, res) {
+  var sess = req.session;
+  if (!sess) {
+    res.send(JSON.stringify({'status': 'error'}));
+  } else {
+    var email = sess.email;
+    if (!email) {
+      res.send(JSON.stringify({'status': 'error'}));
+    } else {
+      connection.query('SELECT favorites FROM Users WHERE email = "'+email+'"', function(err, rows) {
+        var favorites = rows[0]['favorites'];
+        res.send(JSON.stringify({'favorites': favorites}));
+        });
+      }
+    }
+});
 
 var port = process.argv[2] || 8000;
 app.listen(port);

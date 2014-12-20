@@ -14,6 +14,8 @@ var Search = React.createClass({
 	getInitialState: function() {
 		return {
 			searchComplete: false,
+			buttonEnableStatus: [false, false, false, false, false],
+			favorites: '',
 			apps: [
 				{'name': '', 'url': '', 'img': 'res/default.png'}, 
 				{'name': '', 'url': '', 'img': 'res/default.png'}, 
@@ -23,7 +25,28 @@ var Search = React.createClass({
 			],
 		};
 	},
-	
+
+	_setButtonsEnabled: function() {
+		if (!this.state.searchComplete) {
+			console.log("search hasn't finished...");
+			this.setState({buttonEnableStatus: [false, false, false, false, false]});	
+			return;
+		}
+		xhr('GET', 'api/favorite').success(function(data) {
+			var enableTemp = [true, true, true, true, true];
+			var favorites = data['favorites'].split('%:%');
+			for (var j = 0; j < favorites.length; j++) {
+				var appname = favorites[j];
+				for (var i = 0; i < this.state.apps.length; i++) {
+					if (appname === this.state.apps[i]['name']) {		
+						enableTemp[i] = false;
+					}
+				}
+			}
+			this.setState({buttonEnableStatus: enableTemp});
+		}.bind(this));
+	},
+
 	_handleSubmit: function(event) {
 		var searchTerm = this.refs.searchBox.getValue();
 		this.setState({
@@ -36,10 +59,12 @@ var Search = React.createClass({
 				{'img': 'res/loading.gif'}
 			]
 		});
+		this._setButtonsEnabled();
 		xhr('POST', 'api/itunes', {'searchTerm': searchTerm})
 		.success(function(data) {
 			this.parseData(data['results']);
 			this.setState({searchComplete: true});
+			this._setButtonsEnabled();
 		}.bind(this));
 		event.preventDefault();
     },
@@ -88,6 +113,61 @@ var Search = React.createClass({
 			]
 		});
     	this.render();
+    },
+
+    _handleFav0: function() {
+    	var app = this.state.apps[0];
+    	this._setButtonsEnabled();
+    	xhr('POST', 'api/favorite', {'appname': app['name']}).success(function(data) {
+    		if (data['status'] === 'success') {
+    			this._setButtonsEnabled();
+    		}
+    	}.bind(this));
+    	event.preventDefault();
+    },
+
+    _handleFav1: function() {
+    	var app = this.state.apps[1];
+    	this._setButtonsEnabled();
+    	xhr('POST', 'api/favorite', {'appname': app['name']}).success(function(data) {
+    		if (data['status'] === 'success') {
+    			this._setButtonsEnabled();
+    		}
+    	}.bind(this));
+    	event.preventDefault();
+    },
+
+    _handleFav2: function() {
+    	var app = this.state.apps[2];
+    	this._setButtonsEnabled();
+    	xhr('POST', 'api/favorite', {'appname': app['name']}).success(function(data) {
+    		if (data['status'] === 'success') {
+    			this._setButtonsEnabled();
+    		}
+    	}.bind(this));
+    	event.preventDefault();
+    },
+
+    _handleFav3: function() {
+    	var app = this.state.apps[3];
+    	this._setButtonsEnabled();
+    	xhr('POST', 'api/favorite', {'appname': app['name']}).success(function(data) {
+    		if (data['status'] === 'success') {
+    			this._setButtonsEnabled();
+    		}
+    	}.bind(this));
+    	event.preventDefault();
+    },
+
+    _handleFav4: function() {
+    	var app = this.state.apps[4];
+    	this._setButtonsEnabled();
+    	xhr('POST', 'api/favorite', {'appname': app['name']}).success(function(data) {
+    		if (data['status'] === 'success') {
+    			this._setButtonsEnabled();
+    		}
+    	}.bind(this));
+    	event.preventDefault();
     },
 
 	render: function() {
@@ -153,11 +233,11 @@ var Search = React.createClass({
 						</Panel>
 					</div>
 					<div>
-						<Button bsStyle="primary" disabled={!this.state.searchComplete} style={buttonStyle}>Favorite</Button>
-						<Button bsStyle="primary" disabled={!this.state.searchComplete} style={buttonStyle}>Favorite</Button>
-						<Button bsStyle="primary" disabled={!this.state.searchComplete} style={buttonStyle}>Favorite</Button>
-						<Button bsStyle="primary" disabled={!this.state.searchComplete} style={buttonStyle}>Favorite</Button>
-						<Button bsStyle="primary" disabled={!this.state.searchComplete} style={buttonStyle}>Favorite</Button>
+						<Button bsStyle="primary" onClick={this._handleFav0} disabled={!this.state.buttonEnableStatus[0]} style={buttonStyle}>Favorite</Button>
+						<Button bsStyle="primary" onClick={this._handleFav1} disabled={!this.state.buttonEnableStatus[1]} style={buttonStyle}>Favorite</Button>
+						<Button bsStyle="primary" onClick={this._handleFav2} disabled={!this.state.buttonEnableStatus[2]} style={buttonStyle}>Favorite</Button>
+						<Button bsStyle="primary" onClick={this._handleFav3} disabled={!this.state.buttonEnableStatus[3]} style={buttonStyle}>Favorite</Button>
+						<Button bsStyle="primary" onClick={this._handleFav4} disabled={!this.state.buttonEnableStatus[4]} style={buttonStyle}>Favorite</Button>
 					</div>
 				</div>
 				
