@@ -10,7 +10,22 @@ var xhr = require('./xhr');
 
 var Index = React.createClass({
 	getInitialState: function() {
-		return {invalidLogin: false};
+		return {
+			invalidLogin: false,
+			'first': '',
+			'last': '',
+			'email': '',
+			'pass': ''
+		};
+	},
+
+	_handleRegisterChange: function() {
+		this.setState({
+			'first': this.refs.registerFirst.getValue(),
+			'last': this.refs.registerLast.getValue(),
+			'email': this.refs.registerEmail.getValue(),
+			'pass': this.refs.registerPass.getValue()	
+		})
 	},
 
 	_onRegisterSubmit: function() {
@@ -18,6 +33,29 @@ var Index = React.createClass({
     	var last = this.refs.registerLast.getValue();
 		var email = this.refs.registerEmail.getValue();
     	var pass = this.refs.registerPass.getValue();
+    	var payload = {
+    		'first': first,
+    		'last': last,
+    		'email': email,
+    		'pass': pass
+    	}
+    	this.setState({
+    			'first': '',
+				'last': '',
+				'email': '',
+				'pass': ''
+    	});
+    	this.render();
+    	xhr('POST', 'api/register/', payload).success(function(data) {
+    		if (data['status'] === 'success') {
+    			window.alert(first + ', your account was successfully created. Log in to continue.');
+    		} else {
+    			window.alert('Error. An account with that email has already been created. Please try again.');
+    		}
+    		
+    		this.render();
+    	}.bind(this));
+    	event.preventDefault();
 	},
 
 	_onSigninSubmit: function() {
@@ -44,10 +82,10 @@ var Index = React.createClass({
 				<div className="form-group">
 					<form className="form-register" role="form">
 						<h2 className="form-register-heading">Register</h2>
-						<Input type="text" ref="registerFirst" className="form-control" required placeholder="First name"/>
-						<Input type="text" ref="registerLast" className="form-control" required placeholder="Last name"/>
-						<Input type="email" ref="registerEmail" className="form-control" required placeholder="Email address"/>
-						<Input type="password" ref="registerPass" className="form-control" placeholder="Password"/>
+						<Input type="text" ref="registerFirst" onChange={this._handleRegisterChange} value={this.state.first} className="form-control" required placeholder="First name"/>
+						<Input type="text" ref="registerLast" onChange={this._handleRegisterChange} value={this.state.last} className="form-control" required placeholder="Last name"/>
+						<Input type="email" ref="registerEmail" onChange={this._handleRegisterChange} value={this.state.email} className="form-control" required placeholder="Email address"/>
+						<Input type="password" ref="registerPass" onChange={this._handleRegisterChange} value={this.state.pass} className="form-control" placeholder="Password"/>
 						<Button type="submit" bsStyle="primary" onClick={this._onRegisterSubmit}>Sign up</Button>
 
 					</form>

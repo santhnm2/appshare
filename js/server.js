@@ -77,7 +77,7 @@ app.post('/api/login', function(req, res) {
   var email = req.body['email'];
   var pass = req.body['pass'];
   connection.query('SELECT * FROM Users WHERE email = "'+email+'" AND password = "'+pass+'"', function(err, rows) {
-    if (rows.length == 1) {
+    if (rows.length == 0) {
       res.send(JSON.stringify({"status": "success"}));
     } else {
       res.send(JSON.stringify({"status": "error"}));
@@ -90,9 +90,9 @@ app.post('/api/register', function(req, res) {
   var last = req.body['last'];
   var email = req.body['email'];
   var pass = req.body['pass'];
-  connection.query('SELECT * FROM Users WHERE email = "'+email+'"', function(err, row) {
+  connection.query('SELECT * FROM Users WHERE email = "'+email+'"', function(err, rows) {
     if (rows.length == 0) {
-      connection.query('INSERT INTO Users (first, last, email, password) VALUES ("'+first+'", "'+last+'", "'+email+'", "'+password+'")', function(err, rows) {
+      connection.query('INSERT INTO Users (first, last, email, password) VALUES ("'+first+'", "'+last+'", "'+email+'", "'+pass+'")', function(err, rows) {
         console.log('registration successful');
       });
       res.send(JSON.stringify({'status': 'success'}));
