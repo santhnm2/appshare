@@ -1,4 +1,3 @@
-var auth = require('./customAuth');
 var http = require('http');
 var express = require('express');
 var session = require('express-session');
