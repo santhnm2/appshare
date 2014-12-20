@@ -14,10 +14,9 @@ var NavbarWrapper = React.createClass({
 		return (
 			<Navbar fixedTop fluid brand="Appshare" role="navigation">
 				<Nav>
-					<NavItem eventKey={1} href="../friends.html">My Friends</NavItem>
-    				<NavItem eventKey={2} href="../favorites.html">My Favorites</NavItem>
-    				<NavItem eventKey={3} href="../search.html">Search</NavItem>
-    				<DropdownButton eventKey={4} title="Account">
+    				<NavItem eventKey={1} href="../favorites.html">My Favorites</NavItem>
+    				<NavItem eventKey={2} href="../search.html">Search</NavItem>
+    				<DropdownButton eventKey={3} title="Account">
     					<MenuItem eventKey="1" href="#">Sign out</MenuItem>
     				</DropdownButton>
 				</Nav>
