@@ -14,8 +14,10 @@ var Index = React.createClass({
 	},
 
 	_onRegisterSubmit: function() {
-
-
+		var first = this.refs.registerFirst.getValue();
+    	var last = this.refs.registerLast.getValue();
+		var email = this.refs.registerEmail.getValue();
+    	var pass = this.refs.registerPass.getValue();
 	},
 
 	_onSigninSubmit: function() {
@@ -26,7 +28,7 @@ var Index = React.createClass({
 			if (data['status'] === 'success') {
 				window.location.assign('/search.html');
 			} else {
-				window.alert("Invalid credentials. Please try again.")
+				window.alert("Invalid credentials. Please try again.");
 			}
 		}.bind(this));
 		event.preventDefault();
@@ -42,10 +44,10 @@ var Index = React.createClass({
 				<div className="form-group">
 					<form className="form-register" role="form">
 						<h2 className="form-register-heading">Register</h2>
-						<Input type="text" ref="register-first" className="form-control" required placeholder="First name"/>
-						<Input type="text" ref="register-last" className="form-control" required placeholder="Last name"/>
-						<Input type="email" ref="register-email" className="form-control" required placeholder="Email address"/>
-						<Input type="password" ref="register-pass" className="form-control" placeholder="Password"/>
+						<Input type="text" ref="registerFirst" className="form-control" required placeholder="First name"/>
+						<Input type="text" ref="registerLast" className="form-control" required placeholder="Last name"/>
+						<Input type="email" ref="registerEmail" className="form-control" required placeholder="Email address"/>
+						<Input type="password" ref="registerPass" className="form-control" placeholder="Password"/>
 						<Button type="submit" bsStyle="primary" onClick={this._onRegisterSubmit}>Sign up</Button>
 
 					</form>
