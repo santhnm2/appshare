@@ -168,6 +168,12 @@ app.get('/api/favorite', function(req, res) {
     }
 });
 
+app.get('/api/logout/', function(req, res) {
+  req.logout();
+  res.send(JSON.stringify({'status': 'success'}));
+  //res.sendFile('/index.html', { root: __dirname+'/../' });
+});
+
 var port = process.argv[2] || 8000;
 app.listen(port);
 

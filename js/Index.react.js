@@ -61,7 +61,6 @@ var Index = React.createClass({
 	_onSigninSubmit: function() {
 		var email = this.refs.signinEmail.getValue();
     	var pass = this.refs.signinPass.getValue();
-		console.log("email = " + email + ", pass = " + pass);	
 		xhr('POST', 'api/login/', {'email': email, 'pass': pass}).success(function(data){
 			if (data['status'] === 'success') {
 				window.location.assign('/search.html');
